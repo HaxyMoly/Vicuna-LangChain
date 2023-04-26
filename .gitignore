@@ -1,0 +1,5 @@
+text2vec-base-chinese/
+documents/
+__pycache__/
+.idea/
+.DS_Store

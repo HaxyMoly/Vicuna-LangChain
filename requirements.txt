@@ -1,0 +1,5 @@
+beautifulsoup4>=4.11.1
+docx2txt>=0.8
+PyMuPDF>=1.22.1
+torch>=2.1.0.dev20230415
+transformers>=4.28.1
