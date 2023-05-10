@@ -7,8 +7,8 @@ import torch
 from bs4 import BeautifulSoup
 
 device = 'cuda' if torch.cuda.is_available() else 'cpu'
-tokenizer = BertTokenizer.from_pretrained('text2vec-base-chinese')
-model = BertModel.from_pretrained('text2vec-base-chinese')
+tokenizer = BertTokenizer.from_pretrained('shibing624/text2vec-base-chinese')
+model = BertModel.from_pretrained('shibing624/text2vec-base-chinese')
 
 class PromptGenerator:
     def __init__(self, knowledge_dir = 'documents', k = 5, chunk_length = 128):
