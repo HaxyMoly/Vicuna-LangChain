@@ -1,7 +1,7 @@
 import torch
 import argparse
-from fastchat.conversation import get_default_conv_template, compute_skip_echo_len
-from fastchat.serve.inference import load_model
+from fastchat.model import load_model
+from fastchat.conversation import get_conv_template
 from promptGenerator import PromptGenerator
 
 
@@ -15,38 +15,42 @@ def main(args):
         debug=args.debug,
     )
 
-    conv = get_default_conv_template(args.vicuna_dir).copy()
+    conv = get_conv_template("vicuna_v1.1")
     if args.knowledge_base:
         prompt_generator = PromptGenerator(knowledge_dir = 'documents', k = 5, chunk_length = 128)
 
     while True:
+        question = input("USER: ")
         if args.knowledge_base:
-            question = input("USER: ")
             msg = prompt_generator.get_prompt([question])
             # print(msg)
         else:
-            question = input("USER: ")
             msg = question
 
         conv.append_message(conv.roles[0], msg)
         conv.append_message(conv.roles[1], None)
         prompt = conv.get_prompt()
-        print(prompt)
+        # print(prompt)
 
-        inputs = tokenizer([prompt])
+        input_ids = tokenizer([prompt]).input_ids
+
         output_ids = model.generate(
-            torch.as_tensor(inputs.input_ids).to(args.device),
+            torch.as_tensor(input_ids).to(args.device),
             do_sample=True,
             temperature=args.temperature,
             max_new_tokens=args.max_new_tokens,
         )
-        
+
+        if model.config.is_encoder_decoder:
+            output_ids = output_ids[0]
+        else:
+            output_ids = output_ids[0][len(input_ids[0]):]
+
+        outputs = tokenizer.decode(
+            output_ids, skip_special_tokens=True, spaces_between_special_tokens=False
+        )
+
         conv.correct_message(question)
-
-        outputs = tokenizer.batch_decode(output_ids, skip_special_tokens=True)[0]
-        skip_echo_len = compute_skip_echo_len(args.vicuna_dir, conv, prompt)
-        outputs = outputs[skip_echo_len:]
-
         print(f"ASSISTANT: {outputs}")
 
 

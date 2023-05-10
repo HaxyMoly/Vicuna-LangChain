@@ -1,7 +1,7 @@
 # Vicuna-LangChain
 A simple LangChain-like implementation based on Sentence Embedding+local knowledge base, with Vicuna (FastChat) serving as the LLM. Supports both Chinese and English, and can process PDF, HTML, and DOCX formats of documents as knowledge base.
 
-一个简单的类LangChain实现，基于Sentence Embedding+本地知识库，以Vicuna作为生成模型。支持中英双语，支持pdf、html和docx格式的文档作为知识库。[中文文档](#简介)
+一个简单的类LangChain实现，基于Sentence Embedding+本地知识库，以Vicuna作为生成模型。支持中英双语，支持pdf、html和docx格式的文档作为知识 库。[中文文档](#简介)
 
 
 ## Introduction
@@ -27,7 +27,7 @@ This is a very simple LangChain-like implementation. The detailed implementation
 ```bash
 git clone https://github.com/lm-sys/FastChat.git
 ```
-2. Add the following content to line 86 of FastChat/fastchat/conversation.py
+2. Add the following content after `append_message` (line 124) of FastChat/fastchat/conversation.py
 ```python3
 def correct_message(self, message):
         self.messages[-2][-1] = message
@@ -80,7 +80,7 @@ python vicuna_cli.py --vicuna-dir /path/to/vicuna/weights --knowledge-base
 ```bash
 git clone https://github.com/lm-sys/FastChat.git
 ```
-2. 在FastChat/fastchat/conversation.py的第86行添加以下内容
+2. 在FastChat/fastchat/conversation.py的`append_message`函数（第124行）后面添加以下内容
 ```python3
 def correct_message(self, message):
         self.messages[-2][-1] = message
