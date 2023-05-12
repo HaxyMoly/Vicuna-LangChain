@@ -66,7 +66,7 @@ if __name__ == "__main__":
         "--device", type=str, choices=["cpu", "cuda", "mps"], default="cuda"
     )
     parser.add_argument("--knowledge-base", action="store_true")
-    parser.add_argument("--num-gpus", type=str, default="1")
+    parser.add_argument("--num-gpus", type=int, default=1)
     parser.add_argument(
         "--max-gpu-memory",
         type=str,
